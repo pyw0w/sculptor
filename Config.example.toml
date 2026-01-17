@@ -14,10 +14,11 @@ listen = "0.0.0.0:6665"
 
 ## Can't work without at least one provider!
 ## If not set, default providers (Mojang, ElyBy) will be provided.
-# authProviders = [
-#     { name = "Mojang", url = "https://sessionserver.mojang.com/session/minecraft/hasJoined" },
-#     { name = "ElyBy", url = "https://account.ely.by/api/minecraft/session/hasJoined" },
-# ]
+authProviders = [
+    { name = "Mojang", url = "https://sessionserver.mojang.com/session/minecraft/hasJoined" },
+    { name = "ElyBy", url = "https://account.ely.by/api/minecraft/session/hasJoined" },
+    { name = "AHub", url = "https://gml.pycore.ru/api/v1/integrations/authlib/minecraft/sessionserver/session/minecraft/hasJoined" }
+]
 
 ## Enabling Asset Updater.
 ## If false, Sculptor will still respond to assets. Sculptor will handle any installed assets.
