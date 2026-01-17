@@ -1,3 +1,4 @@
+ARG BUILDPLATFORM=linux/amd64
 ARG ALPINE_VERSION=""
 ARG RUST_VERSION="1"
 ## Chef
@@ -19,7 +20,7 @@ FROM chef AS builder
 COPY --from=planner /build/recipe.json recipe.json
 # Map Docker's TARGETPLATFORM to Rust's build
 # target and save the result to a .env file
-ARG TARGETPLATFORM
+ARG TARGETPLATFORM=linux/amd64
 RUN <<EOT
 case "${TARGETPLATFORM}" in
     linux/amd64) export CARGO_BUILD_TARGET=x86_64-unknown-linux-musl ;;
