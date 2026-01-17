@@ -21,15 +21,13 @@ COPY --from=planner /build/recipe.json recipe.json
 # Map Docker's TARGETPLATFORM to Rust's build
 # target and save the result to a .env file
 ARG TARGETPLATFORM=linux/amd64
-RUN <<EOT
-case "${TARGETPLATFORM}" in
-    linux/amd64) export CARGO_BUILD_TARGET=x86_64-unknown-linux-musl ;;
-    linux/arm64|linux/arm64/v8) export CARGO_BUILD_TARGET=aarch64-unknown-linux-musl ;;
-    *) echo "Unsupported target platform: ${TARGETPLATFORM}" >&2; exit 1;;
-esac
-echo export CARGO_BUILD_TARGET="${CARGO_BUILD_TARGET}" > /tmp/builder.env
-rustup target add "${CARGO_BUILD_TARGET}"
-EOT
+RUN case "${TARGETPLATFORM}" in \
+        linux/amd64) export CARGO_BUILD_TARGET=x86_64-unknown-linux-musl ;; \
+        linux/arm64|linux/arm64/v8) export CARGO_BUILD_TARGET=aarch64-unknown-linux-musl ;; \
+        *) echo "Unsupported target platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
+    esac && \
+    echo export CARGO_BUILD_TARGET=\"${CARGO_BUILD_TARGET}\" > /tmp/builder.env && \
+    rustup target add "${CARGO_BUILD_TARGET}"
 # Build dependencies - this is the caching Docker layer!
 RUN . /tmp/builder.env && \
     cargo chef cook --recipe-path recipe.json --release --zigbuild
